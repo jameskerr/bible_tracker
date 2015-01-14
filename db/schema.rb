@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150111215531) do
+ActiveRecord::Schema.define(version: 20150114055023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,4 +22,19 @@ ActiveRecord::Schema.define(version: 20150111215531) do
     t.datetime "updated_at",     null: false
   end
 
+  create_table "readers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "verses", force: :cascade do |t|
+    t.string   "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "reader_id"
+  end
+
+  add_index "verses", ["reader_id"], name: "index_verses_on_reader_id", using: :btree
+
+  add_foreign_key "verses", "readers"
 end

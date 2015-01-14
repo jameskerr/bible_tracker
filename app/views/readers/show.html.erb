@@ -1,0 +1,35 @@
+<script>
+  var reader_id = <%= @reader.id %>
+</script>
+
+<label id="total-progress">Percent Read</label>
+<div class="progress-bar-container">
+  <div id="total-progress-bar"> </div>
+</div>
+
+<div class="container">
+
+<% @bible.each_with_index do |book, book_index| %>
+  <div class="book-container">
+    <h2 class="book"><%= book[:name] %></h2>
+
+    <div class="chapters no-select">
+      <% book[:chapters].keys.in_groups_of(@chapters_per_row, false) do |chapter_row| %>
+      <div class="chapter-row">
+      <% chapter_row.each_with_index do |number, chapter_index| 
+        %><div class="chapter">
+            <div class="chapter-number"><span class="progress"></span><%= number %></div>
+            <div class="verses" data-verses="<%= book[:chapters][number].length %>">
+              <% book[:chapters][number].each_with_index do |read, verse_index| 
+                verse_number = "#{book_index}-#{chapter_index}-#{verse_index}"
+                %><div id="<%= verse_number %>" class="verse-number <%= 'read' if @verses[verse_number] %>"><%= verse_index+1 %></div><% end %>
+            </div>
+          </div><%
+      end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+</div>
